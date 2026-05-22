@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Liste des Médicaments{% endblock %}
+
+{% block content %}
+<div class="card" style="margin: 50px auto; max-width: 900px; padding: 20px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <h2 class="text-center mb-4">💊 Liste des Médicaments</h2>
+    <ul class="list-group">
+        {% for m in medicines %}
+        <li class="list-group-item">
+            {{ m.name }} — Code : {{ m.code }} — Date d’expiration : {{ m.expiry_date }}
+        </li>
+        {% empty %}
+        <li class="list-group-item">Aucun médicament enregistré.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

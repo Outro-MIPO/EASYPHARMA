@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Ajouter un Médicament{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center vh-100" style="background-color: #e8f2ff;">
+    <div class="card shadow-lg p-4" style="width: 920px; border-radius: 12px;">
+        <h3 class="text-center mb-4">AJOUTER UN MÉDICAMENT</h3>
+
+        <form method="post" class="row g-3 align-items-end">
+            {% csrf_token %}
+
+            <!-- Nom -->
+            <div class="col-md-4">
+                <label class="form-label" for="{{ form.name.id_for_label }}">Nom</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="text-danger small">{{ form.name.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Code -->
+            <div class="col-md-4">
+                <label class="form-label" for="{{ form.code.id_for_label }}">Code</label>
+                {{ form.code }}
+                {% if form.code.errors %}
+                    <div class="text-danger small">{{ form.code.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Date d'expiration -->
+            <div class="col-md-4">
+                <label class="form-label" for="{{ form.expiry_date.id_for_label }}">Date d'expiration</label>
+                {{ form.expiry_date }}
+                {% if form.expiry_date.errors %}
+                    <div class="text-danger small">{{ form.expiry_date.errors }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Bouton -->
+            <div class="col-12 mt-2">
+                <button type="submit" class="btn btn-primary w-100" style="border-radius: 8px;">Enregistrer</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    body { font-family: 'Poppins', sans-serif; }
+    .form-label { font-weight: 500; }
+    .form-control { height: calc(1.6em + 1rem + 2px); }
+</style>
+{% endblock %}

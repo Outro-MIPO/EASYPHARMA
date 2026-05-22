@@ -1,0 +1,129 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <h2 style="text-align:center; color:white;">Souhaitez-vous payer :</h2>
+
+<div style="border: 2px solid #4CAF50; 
+              border-radius: 10px; 
+              padding: 20px; 
+              text-align: center; 
+              max-width: 500px; 
+              margin: 50px auto; 
+              background-color: #f9fff9;
+              word-wrap: break-word;
+              overflow-wrap: break-word;">
+
+    <h2 style="color: #2e7d32; font-size: 30px; margin-bottom: 15px;">
+      🎉 Merci pour votre confiance 🎉
+    </h2>
+
+    <p style="color: #333; font-size: 20px; line-height: 1.5; margin: 10px 0;">
+      Nous vous remercions d’avoir choisi  
+      <span style="color:#f57c00; font-weight:bold;">notre service traiteur</span>.
+    </p>
+
+    <p style="color: #444; font-size: 20px; line-height: 1.5; margin: 10px 0;">
+      Veuillez sélectionner un moyen de paiement sécurisé :
+    </p>
+</div>
+
+    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
+        <!-- Bouton Wave -->
+       <form action="{% url 'choix_service' %}" method="post">
+    {% csrf_token %}
+    <button type="submit" 
+            style="font-size:16px; font-weight:bold; padding:12px 24px; background-color:#1976d2; color:white; border:none; border-radius:8px; cursor:pointer; display:flex; align-items:center; gap:12px;">
+        
+        <img src="{% static 'assets/img/E477p8xw_400x400.jpg' %}" alt="Wave" 
+             style="height:100px; width:100px; border-radius:8px;">
+        Wave 💳
+    </button>
+</form>
+
+
+        <br><br><br><br>
+        <!-- Bouton Orange Money -->
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" 
+                    style="font-size:16px; font-weight:bold; padding:12px 24px; background-color:#f57c00; color:white; border:none; border-radius:8px; cursor:pointer;">
+                
+                      <img src="{% static 'assets/img/orange-money-logo-png_seeklogo-440383.png' %}" alt="Orange Money" 
+             style="height:100px; width:100px; border-radius:8px;">
+                    Orange Money 🟠
+            </button>
+        </form>
+        <br><br><br><br>
+
+        <!-- Bouton Moov Money -->
+        <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" 
+                    style="font-size:16px; font-weight:bold; padding:12px 24px; background-color:#388e3c; color:white; border:none; border-radius:8px; cursor:pointer;">
+   
+   <img src="{% static 'assets/img/icon-assistance-moovci_Plan-de-travail-1-1.png' %}" alt="Moov Money" 
+             style="height:100px; width:100px; border-radius:8px;">
+                    Moov Money 💵
+            </button>
+        </form>
+    </div>
+
+
+
+
+{% endblock %}
+
+
+
+
+    <table>
+  
+            <caption> 
+               
+
+    <div style="padding-top: 20px;">
+        <label for="identifiant" style="font-weight: bold; font-size: 18px;">Identifiant client</label>
+        <input type="text" name="identifiant" id="identifiant" placeholder="Nom, Prénoms..." 
+               style="width: 600px; height: 40px; font-size: 18px; padding: 5px; border-radius: 10px;">
+    </div>
+
+    <div style="padding-top: 20px;">
+        <label for="lieux" style="font-weight: bold; font-size: 18px;">Lieux de la cérémonie</label>
+        <input type="text" name="lieux" id="lieux" placeholder="Koumassi, Cocody, Port Bouet..." 
+               style="width: 600px; height: 40px; font-size: 18px; padding: 5px; border-radius: 10px;">
+    </div>
+
+    <div style="padding-top: 20px;">
+        <label for="contact" style="font-weight: bold; font-size: 18px;">Contacts client</label>
+        <input type="number" name="contact" id="contact" placeholder="+225.............." 
+               style="width: 600px; height: 40px; font-size: 18px; padding: 5px; border-radius: 10px;">
+    </div>
+
+    <div style="padding-top: 20px;">
+        <label for="date_evenement" style="font-weight: bold; font-size: 18px;">Date de l'événement</label>
+        <input type="date" name="date_evenement" id="date_evenement" 
+               style="width: 600px; height: 40px; font-size: 18px; padding: 5px; border-radius: 10px;">
+    </div>
+
+    <div style="padding-top: 20px;">
+        <label for="forfait" style="font-weight: bold; font-size: 18px;">Forfait</label>
+        <select name="forfait" id="forfait" 
+                style="width: 600px; height: 40px; font-size: 18px; padding: 5px; border-radius: 10px;">
+            <option value="ceremonie">Service</option>
+            <option value="ceremonie_vaiselle">Service + Plonge</option>
+            <option value="ceremonie_vaiselle_nettoyage">Service + Plonge + Nettoyage</option>
+        </select>
+    </div>
+
+    <div style="padding-top: 20px;">
+        <input type="submit" name="recherche" id="recherche" value="Valider"
+               style="width: 400px; height: 60px; font-size: 20px; background-color: #E5AC15; color: #FFFFFF; font-weight: bold;">
+    </div>
+         
+            </caption>
+          
+          
+          
+          </table>

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  <h2 style="text-align:center; color:white;">Souhaitez-vous payer :</h2>
+
+<div style="display:flex; justify-content:center; margin-top:30px;">
+  <table cellpadding="20" cellspacing="20" 
+         style="background-color:white; border:1px solid #ccc; border-radius:10px; text-align:center;">
+    <tr>
+      <td style="background-color:white; border-radius:5px;" align="center">
+    <form action="{% url 'avantleservice' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" 
+                style="font-size:18px; font-weight:bold; padding:12px 24px; background-color:orange; color:white; border:none; border-radius:5px;">
+            Avant le service
+        </button>
+    </form>
+</td>
+
+      <td style="background-color:white; border-radius:5px;" align="center">
+        <form action="{% url 'apresleservice' %}" method="post">
+    {% csrf_token %}
+    <button type="submit" 
+            style="font-size:18px; font-weight:bold; padding:12px 24px; background-color:green; color:white; border:none; border-radius:5px;">
+        Après le service
+    </button>
+</form>
+
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+
+    <table>
+  
+            <caption> 
+               
+
+    <div style="padding-top: 20px;">
+        <label for="identifiant" style="font-weight: bold; font-size: 18px;">Identifiant client</label>
+        <input type="text" name="identifiant" id="identifiant" placeholder="Nom, Prénoms..." 
+               style="width: 600px; height: 40px; font-size: 18px; padding: 5px; border-radius: 10px;">
+    </div>
+
+    <div style="padding-top: 20px;">
+        <label for="lieux" style="font-weight: bold; font-size: 18px;">Lieux de la cérémonie</label>
+        <input type="text" name="lieux" id="lieux" placeholder="Koumassi, Cocody, Port Bouet..." 
+               style="width: 600px; height: 40px; font-size: 18px; padding: 5px; border-radius: 10px;">
+    </div>
+
+    <div style="padding-top: 20px;">
+        <label for="contact" style="font-weight: bold; font-size: 18px;">Contacts client</label>
+        <input type="number" name="contact" id="contact" placeholder="+225.............." 
+               style="width: 600px; height: 40px; font-size: 18px; padding: 5px; border-radius: 10px;">
+    </div>
+
+    <div style="padding-top: 20px;">
+        <label for="date_evenement" style="font-weight: bold; font-size: 18px;">Date de l'événement</label>
+        <input type="date" name="date_evenement" id="date_evenement" 
+               style="width: 600px; height: 40px; font-size: 18px; padding: 5px; border-radius: 10px;">
+    </div>
+
+    <div style="padding-top: 20px;">
+        <label for="forfait" style="font-weight: bold; font-size: 18px;">Forfait</label>
+        <select name="forfait" id="forfait" 
+                style="width: 600px; height: 40px; font-size: 18px; padding: 5px; border-radius: 10px;">
+            <option value="ceremonie">Service</option>
+            <option value="ceremonie_vaiselle">Service + Plonge</option>
+            <option value="ceremonie_vaiselle_nettoyage">Service + Plonge + Nettoyage</option>
+        </select>
+    </div>
+
+    <div style="padding-top: 20px;">
+        <input type="submit" name="recherche" id="recherche" value="Valider"
+               style="width: 400px; height: 60px; font-size: 20px; background-color: #E5AC15; color: #FFFFFF; font-weight: bold;">
+    </div>
+         
+            </caption>
+          
+          
+          
+          </table>

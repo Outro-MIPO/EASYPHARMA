@@ -1,0 +1,298 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <title>Pharma &mdash; Colorlib Template</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css?family=Rubik:400,700|Crimson+Text:400,400i" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'assets/fonts/icomoon/style.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/jquery-ui.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/owl.theme.default.min.css' %}">
+
+
+  <link rel="stylesheet" href="{% static 'assets/css/aos.css' %}">
+
+  <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+</head>
+
+
+<body>
+
+  <div class="site-wrap">
+
+
+    <div class="site-navbar py-2">
+
+      <div class="search-wrap">
+        <div class="container">
+          <a href="#" class="search-close js-search-close"><span class="icon-close2"></span></a>
+          <form action="#" method="post">
+            <input type="text" class="form-control" placeholder="Search keyword and hit enter...">
+          </form>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="logo">
+            <div class="site-logo">
+              <a href="{% url 'waiter' %}" class="js-logo-clone">EASYPHARMA</a>
+            </div>
+          </div>
+          <div class="main-nav d-none d-lg-block">
+            <nav class="site-navigation text-right text-md-center" role="navigation">
+              <ul class="site-menu js-clone-nav d-none d-lg-block">
+                <li class="active"><a href="{% url 'dashboard' %}"> Dashboard EASYPHARMA </a></li>
+                <li><a href="{% url  'add_stock' %}">AJOUTER STOCKS</a></li>
+                <li><a href="{% url 'add_medicine' %}">AJOUTER MEDICAMENTS</a></li>
+                <li class="has-children">
+                  <a href="#">MENU DEROULANT</a>
+                  <ul class="dropdown">
+                    <li><a href="{% url 'add_pharmacy' %}">AJOUTER PHARMACIES</a></li>
+                    
+                    <li class="has-children">
+                      <a href="">MEDICAMENTS &amp; PHARMACIES </a>
+                      <ul class="dropdown">
+                        <li><a href="{% url 'medicines' %}">LISTE DES MEDICAMENTS</a></li>
+                        <li><a href="{% url 'pharmacies' %}">LISTE DES PHARMACIES</a></li>
+                      </ul>
+                    </li>
+                    
+                    
+                  </ul>
+                </li>
+                
+              </ul>
+            </nav>
+          </div>
+         
+        </div>
+      </div>
+    </div>
+
+    <!-- Ici on met le contenu spécifique des pages -->
+
+
+    <div class="site-blocks-cover" style="background-image: url('{% static 'assets/images/hero_1.jpg'%}'  );">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-7 mx-auto order-lg-2 align-self-center">
+            <div class="site-block-cover-content text-center">
+              <h2 class="sub-title">Une vue claire sur vos stocks, des prédictions fiables pour chaque pharmacie.</h2>
+              <h1>BIENVENUE EASYPHARMA</h1>
+              <!--<p><a href="#" class="btn btn-primary px-5 py-3">Shop Now</a></p>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row align-items-stretch section-overlap">
+          <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
+            <div class="banner-wrap bg-primary h-100">
+              <a href="#" class="h-100">
+                <h5>IA <br> Intelligence Artificielle </h5>
+                <p>
+                  
+                  <strong>prédictions intelligentes sur la disponibilité des médicaments.</strong>
+                </p>
+              </a>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
+            <div class="banner-wrap h-100">
+              <a href="#" class="h-100">
+                <h5>vision complète <br> et précise de leurs stocks</h5>
+                <p>
+                   POUR PHARMACIES
+                  
+                </p>
+              </a>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
+            <div class="banner-wrap bg-warning h-100">
+              <a href="#" class="h-100">
+                <h5>Gestion des ruptures, Alertes automatiques pour produits périmés </h5>
+                <p>
+                  <strong>Service rapide et efficace pour les patients..</strong>
+                </p>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row">
+          <div class="title-section text-center col-12">
+          </div>
+        </div>
+
+        {% block content %}
+<!-- Le contenu des pages comme add_pharmacy.html sera injecté ici -->
+{% endblock %}
+
+        <div class="row">
+          <div class="col-sm-6 col-lg-4 text-center item mb-4">
+            <span class="tag">Vente</span>
+            <a href="shop-single.html"> <img src="{% static 'assets/images/product_01.png' %}" alt="Image"></a>
+            <h3 class="text-dark"><a href="shop-single.html">Bioderma</a></h3>
+            <!-- <p class="price"><del>95.00</del> &mdash; $55.00</p>-->
+          </div>
+          <div class="col-sm-6 col-lg-4 text-center item mb-4">
+            <a href="shop-single.html"> <img src="{% static 'assets/images/product_02.png' %}" alt="Image"></a>
+            <h3 class="text-dark"><a href="shop-single.html">Chanca Piedra</a></h3>
+            
+          </div>
+          <div class="col-sm-6 col-lg-4 text-center item mb-4">
+            <a href="shop-single.html"> <img src="{% static 'assets/images/product_03.png' %}" alt="Image"></a>
+            <h3 class="text-dark"><a href="shop-single.html">Umcka Cold Care</a></h3>
+           
+          </div>
+
+          <div class="col-sm-6 col-lg-4 text-center item mb-4">
+
+            <a href="shop-single.html"> <img src="{% static 'assets/images/product_04.png' %}" alt="Image"></a>
+            <h3 class="text-dark"><a href="shop-single.html">Cetyl Pure</a></h3>
+            
+          </div>
+          <div class="col-sm-6 col-lg-4 text-center item mb-4">
+            <a href="shop-single.html"> <img src="{% static 'assets/images/product_05.png' %}" alt="Image"></a>
+            <h3 class="text-dark"><a href="shop-single.html">CLA Core</a></h3>
+            
+          </div>
+          <div class="col-sm-6 col-lg-4 text-center item mb-4">
+            
+            <a href="shop-single.html"> <img src="{% static 'assets/images/product_06.png' %}" alt="Image"></a>
+            <h3 class="text-dark"><a href="shop-single.html">Poo Pourri</a></h3>
+            
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-12 text-center">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+   
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row">
+          <div class="title-section text-center col-12">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 block-3 products-wrap">
+            <div class="nonloop-block-3 no-direction owl-carousel">
+        
+              <div class="testimony">
+                <blockquote>
+                  <img src="{% static 'assets/images/person_1.jpg' %}" alt="Image" class="img-fluid w-25 mb-4 rounded-circle">
+                  <p>&ldquo;Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo omnis voluptatem consectetur quam tempore obcaecati maiores voluptate aspernatur iusto eveniet, placeat ab quod tenetur ducimus. Minus ratione sit quaerat unde.&rdquo;</p>
+                </blockquote>
+
+                <p>&mdash; Kelly Holmes</p>
+              </div>
+        
+              <div class="testimony">
+                <blockquote>
+                  <img src="{% static 'assets/images/person_2.jpg' %}" alt="Image" class="img-fluid w-25 mb-4 rounded-circle">
+                  <p>&ldquo;Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo omnis voluptatem consectetur quam tempore
+                    obcaecati maiores voluptate aspernatur iusto eveniet, placeat ab quod tenetur ducimus. Minus ratione sit quaerat
+                    unde.&rdquo;</p>
+                </blockquote>
+              
+                <p>&mdash; Rebecca Morando</p>
+              </div>
+        
+              <div class="testimony">
+                <blockquote>
+                  <img src="{% static 'assets/images/person_3.jpg' %}" alt="Image" class="img-fluid w-25 mb-4 rounded-circle">
+                  <p>&ldquo;Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo omnis voluptatem consectetur quam tempore
+                    obcaecati maiores voluptate aspernatur iusto eveniet, placeat ab quod tenetur ducimus. Minus ratione sit quaerat
+                    unde.&rdquo;</p>
+                </blockquote>
+              
+                
+              </div>
+        
+              <div class="testimony">
+                <blockquote>
+                  <img src="{% static 'assets/images/person_4.jpg' %}" alt="Image" class="img-fluid w-25 mb-4 rounded-circle">
+                  <p>&ldquo;Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo omnis voluptatem consectetur quam tempore
+                    obcaecati maiores voluptate aspernatur iusto eveniet, placeat ab quod tenetur ducimus. Minus ratione sit quaerat
+                    unde.&rdquo;</p>
+                </blockquote>
+              
+                <p>&mdash; Andrew Neel</p>
+              </div>
+        
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="site-section bg-secondary bg-image" style="background-image: url('{% static 'assets/images/bg_2.jpg' %}');">
+      <div class="container">
+        <div class="row align-items-stretch">
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <a href="#" class="banner-1 h-100 d-flex" style="background-image: url('{% static 'assets/images/bg_1.jpg' %}');">
+              <div class="banner-1-inner align-self-center">
+                <h2>EASYPHARMA Products</h2>
+                <p>EASYPHARMA est une solution intelligente qui offre une vue claire sur les stocks, anticipe les ruptures grâce à des prédictions avancées et optimise la gestion des files d’attente pour améliorer le service patient.
+                </p>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <a href="#" class="banner-1 h-100 d-flex" style="background-image: url('{% static 'assets/images/bg_2.jpg' %}');">
+              <div class="banner-1-inner ml-auto  align-self-center">
+                
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row pt-5 mt-5 text-center">
+          <div class="col-md-12">
+            <p>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              Copyright &copy;
+              <script>document.write(new Date().getFullYear());</script> All rights reserved easypharma
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'assets/js/jquery-ui.js' %}"></script>
+  <script src="{% static 'assets/js/popper.min.js' %}"></script>
+  <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'assets/js/jquery.magnific-popup.min.js' %}"></script>
+  <script src="{% static 'assets/js/aos.js' %}"></script>
+  <script src="{% static 'assets/js/main.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EASYPHARMA - Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Librairies export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <style>
+        /* 🌟 Police Times New Roman */
+        body, table, h1, h3, button {
+            font-family: "Times New Roman", serif !important;
+        }
+
+        /* 🌟 Tableaux élégants */
+        table {
+            background: #fdfdfd !important;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #0d47a1;
+        }
+
+        thead {
+            background: #e3f2fd;      
+            color: #0d47a1;           
+            font-weight: bold;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f7fbff !important;
+        }
+
+        tbody tr:hover {
+            background: #dceeff !important;
+            transition: 0.3s;
+        }
+
+        /* 🌟 Boutons arrondis */
+        button {
+            border-radius: 10px !important;
+        }
+
+        /* 🌟 Taille graphique camembert réduite */
+        #stockPieChart {
+            max-width: 350px !important;
+            max-height: 350px !important;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body class="p-4">
+
+<h1 class="mb-2 text-center">📊 Dashboard EASYPHARMA</h1>
+
+<!-- 🌟 Résumé des alertes -->
+<div class="mb-4 text-center">
+    <span class="badge bg-danger me-2">🔥 {{ alert_counts.rupture }} rupture(s)</span>
+    <span class="badge bg-warning text-dark me-2">🟡 {{ alert_counts.attention }} bientôt périmé</span>
+    <span class="badge bg-success">🟢 {{ alert_counts.normal }} stock OK</span>
+</div>
+
+<!-- Boutons -->
+<div class="mb-4 text-center">
+    <button class="btn btn-success me-2" onclick="downloadPDF()">📄 Télécharger PDF</button>
+    <button class="btn btn-primary" onclick="downloadExcel()">📊 Export Excel</button>
+</div>
+
+<div id="dashboard-content">
+
+    <!-- Alertes IA -->
+    <h3 class="mt-4">📍 Alertes IA</h3>
+    <table class="table table-bordered shadow-sm" id="alertTable">
+      <thead>
+        <tr>
+          <th>Pharmacie</th>
+          <th>Médicament</th>
+          <th>Quantité</th>
+          <th>Status stock</th>
+          <th>Date de péremption</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for alert in alerts %}
+        <tr>
+          <td>{{ alert.pharmacy }}</td>
+          <td>{{ alert.medicine }}</td>
+          <td>{{ alert.quantity }}</td>
+          <td>
+            {% if alert.status_stock == 'rupture' %}
+                <span class="badge bg-danger">🔥 Rupture</span>
+            {% elif alert.status_stock == 'attention' %}
+                <span class="badge bg-warning text-dark">🟡 Attention</span>
+            {% else %}
+                <span class="badge bg-success">🟢 Stock OK</span>
+            {% endif %}
+          </td>
+          <td class="{% if alert.status_expiry == 'périmé' %}table-danger
+                     {% elif alert.status_expiry == 'bientôt périmé' %}table-warning
+                     {% else %}table-success{% endif %}">
+            {{ alert.expiry_date }}
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Aucune alerte</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- 📈 Statistiques -->
+    <h3 class="mt-5">📈 Statistiques</h3>
+    <div class="row text-center">
+      <div class="col-md-6">
+        <canvas id="stockPieChart"></canvas>
+      </div>
+      <div class="col-md-6">
+        <canvas id="pharmacyBarChart"></canvas>
+      </div>
+    </div>
+
+    <!-- 🔹 Tendance régression -->
+    <h3 class="mt-5 text-center">📉 Tendance des produits expirants</h3>
+    <canvas id="expiryTrendChart" style="max-height: 350px;"></canvas>
+
+    <!-- Stocks détaillés -->
+    <h3 class="mt-5">📦 Stocks par pharmacie</h3>
+
+    <!-- Filtres date -->
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label for="startDate" class="form-label">Date début</label>
+            <input type="date" id="startDate" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label for="endDate" class="form-label">Date fin</label>
+            <input type="date" id="endDate" class="form-control">
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button class="btn btn-info w-100" onclick="filterStocksByDate()">Filtrer</button>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button class="btn btn-secondary w-100" onclick="resetStockFilter()">Réinitialiser</button>
+        </div>
+    </div>
+
+    <table class="table shadow-sm" id="stockTable">
+      <thead>
+        <tr>
+          <th>Pharmacie</th>
+          <th>Médicament</th>
+          <th>Quantité</th>
+          <th>Mise à jour</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in stocks %}
+        <tr>
+          <td>{{ s.pharmacy.name }}</td>
+          <td>{{ s.medicine.name }}</td>
+          <td>{{ s.quantity }}</td>
+          <td>{{ s.updated_at }}</td>
+          <td>
+            <a href="{% url 'edit_stock' s.id %}" class="btn btn-sm btn-primary">Modifier</a>
+            <a href="{% url 'delete_stock' s.id %}" class="btn btn-sm btn-danger">Supprimer</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Aucun stock enregistré</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Pharmacies -->
+    <h3 class="mt-5">🏥 Pharmacies enregistrées</h3>
+    <table class="table shadow-sm" id="pharmacyTable">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Adresse</th>
+                <th>Contact</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in pharmacies %}
+            <tr>
+                <td>{{ p.name }}</td>
+                <td>{{ p.address }}</td>
+                <td>{{ p.contact }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3">Aucune pharmacie enregistrée</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Scripts export et filtres -->
+<script>
+  function downloadPDF() {
+      const element = document.getElementById('dashboard-content');
+      html2pdf().from(element).set({margin:0.5, filename:'dashboard.pdf', html2canvas:{scale:2}}).save();
+  }
+
+  function downloadExcel() {
+      const wb = XLSX.utils.book_new();
+
+      const ws1 = XLSX.utils.table_to_sheet(document.getElementById('alertTable'));
+      XLSX.utils.book_append_sheet(wb, ws1, "Alertes IA");
+
+      const ws2 = XLSX.utils.table_to_sheet(document.getElementById('stockTable'));
+      XLSX.utils.book_append_sheet(wb, ws2, "Stocks");
+
+      const ws3 = XLSX.utils.table_to_sheet(document.getElementById('pharmacyTable'));
+      XLSX.utils.book_append_sheet(wb, ws3, "Pharmacies");
+
+      XLSX.writeFile(wb, "dashboard.xlsx");
+  }
+
+  function filterStocksByDate() {
+      const start = new Date(document.getElementById('startDate').value);
+      const end = new Date(document.getElementById('endDate').value);
+      const table = document.getElementById('stockTable');
+      const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+      for (let row of rows) {
+          const dateText = row.cells[3].innerText.trim();
+          const rowDate = new Date(dateText);
+          if ((isNaN(start) || rowDate >= start) && (isNaN(end) || rowDate <= end)) {
+              row.style.display = '';
+          } else {
+              row.style.display = 'none';
+          }
+      }
+  }
+
+  function resetStockFilter() {
+      document.getElementById('startDate').value = '';
+      document.getElementById('endDate').value = '';
+      const table = document.getElementById('stockTable');
+      const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+      for (let row of rows) {
+          row.style.display = '';
+      }
+  }
+</script>
+
+<!-- Graphiques -->
+<script>
+  const ctxPie = document.getElementById('stockPieChart').getContext('2d');
+  const stockPieChart = new Chart(ctxPie, {
+      type: 'pie',
+      data: {
+          labels: ['Rupture', 'Attention', 'Stock OK'],
+          datasets: [{
+              data: [
+                  {{ alert_counts.rupture }},
+                  {{ alert_counts.attention }},
+                  {{ alert_counts.normal }}
+              ],
+              backgroundColor: ['#dc3545', '#ffc107', '#28a745']
+          }]
+      }
+  });
+
+  const ctxBar = document.getElementById('pharmacyBarChart').getContext('2d');
+  const pharmacyBarChart = new Chart(ctxBar, {
+      type: 'bar',
+      data: {
+          labels: [
+            {% for name in stock_counts.keys %}
+              "{{ name }}",
+            {% endfor %}
+          ],
+          datasets: [{
+              label: 'Nombre de médicaments',
+              data: [
+                {% for qty in stock_counts.values %}
+                  {{ qty }},
+                {% endfor %}
+              ],
+              backgroundColor: '#0d6efd'
+          }]
+      },
+      options: {
+          scales: {
+              y: { beginAtZero: true }
+          }
+      }
+  });
+
+  // 🔹 Graphique régression linéaire
+  const trendCtx = document.getElementById('expiryTrendChart').getContext('2d');
+  new Chart(trendCtx, {
+      type: 'bar',
+      data: {
+          labels: {{ labels|safe }},
+          datasets: [
+              {
+                  label: "Produits expirants (par mois)",
+                  data: {{ values|safe }},
+                  type: 'bar',
+                  backgroundColor: '#0d6efd',
+                  borderWidth: 1
+              },
+              {
+                  label: "Tendance (régression linéaire)",
+                  data: {{ regression_values|safe }},
+                  type: 'line',
+                  borderColor: '#dc3545',
+                  borderWidth: 3,
+                  tension: 0.2,
+                  fill: false
+              }
+          ]
+      },
+      options: {
+          responsive: true,
+          scales: { y: { beginAtZero: true } }
+      }
+  });
+</script>
+
+</body>
+</html>
